@@ -5,5 +5,10 @@ dokumen & surat (SIMKAH/KUA), bulan madu, dan inspirasi pre-wedding.
 
 **Live:** https://yudventure.github.io/baserbinikah/
 
-Aplikasi ini adalah satu file HTML standalone (`index.html`). Data tersimpan lokal
-di browser (localStorage) — tidak ada server. Cukup buka file atau URL di atas.
+## Cara kerja data
+- Default: data tersimpan di browser (localStorage) — tanpa server, tanpa login.
+- Opsional: aktifkan **login Google + database awan (Supabase)** dengan mengikuti
+  **[SETUP.md](./SETUP.md)**. Saat aktif, data tiap akun tersimpan di awan & sinkron
+  antar perangkat.
+
+File utama: `index.html` (standalone, satu file). Untuk update: edit lalu push.
