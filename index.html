@@ -5623,12 +5623,19 @@ function AppInner() {
     localStorage.setItem("baserbinikah.tab", id);
   }, []);
 
-  // always land at the top of the page when the tab changes
+  // always land at the top of the page when the tab changes (iOS can ignore a
+  // single sync call while layout height is changing → also retry next frame)
   useEffect(() => {
-    window.scrollTo(0, 0);
-    if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+    const toTop = () => {
+      window.scrollTo(0, 0);
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    toTop();
+    requestAnimationFrame(toTop);
+    const t = setTimeout(toTop, 60);
+    return () => clearTimeout(t);
   }, [tab]);
 
   if (!st.loggedIn) return <AuthScreen />;
@@ -5674,7 +5681,7 @@ function AppInner() {
             <div className="theme-bar">
               {THEMES.map((t) => (
                 <button key={t.id} className={"theme-bar-dot" + (st.theme === t.id ? " active" : "")}
-                  onClick={() => setTheme(t.id)} title={t.name} aria-label={t.name}
+                  onClick={() => { setTheme(t.id); setThemeOpen(false); }} title={t.name} aria-label={t.name}
                   style={{ background: `linear-gradient(135deg, ${t.primary} 0 50%, ${t.rose} 50% 100%)` }}>
                   {st.theme === t.id && <Icon name="check" width="15" height="15" />}
                 </button>
